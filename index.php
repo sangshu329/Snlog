@@ -5,6 +5,6 @@
  * Date: 2018-08-10
  * Time: 09:39
  */
-require 'src/Snlog.php';
-$log = new Snlog('','');
+require 'src/snlg/Snlog.php';
+$log = new snlg\Snlog('','');
 $log->resnLog('test','value');

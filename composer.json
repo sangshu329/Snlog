@@ -9,7 +9,7 @@
     },
     "autoload":{
         "psr-4":{
-            "snlg\\":"src/snlg/Snlog"
+            "snlg\\":"src/snlg"
         }
     }
 }
