@@ -121,16 +121,6 @@
               <item name="mypackagist" type="b2602c69:ProjectViewProjectNode" />
               <item name="mypackagist" type="2a2b976b:PhpTreeStructureProvider$1" />
             </path>
-            <path>
-              <item name="mypackagist" type="b2602c69:ProjectViewProjectNode" />
-              <item name="mypackagist" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="mypackagist" type="b2602c69:ProjectViewProjectNode" />
-              <item name="mypackagist" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="tmp" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -180,12 +170,12 @@
       <workItem from="1533519748802" duration="6761000" />
       <workItem from="1533605034808" duration="1014000" />
       <workItem from="1533608947875" duration="852000" />
-      <workItem from="1533802075960" duration="21985000" />
+      <workItem from="1533802075960" duration="22579000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="30612000" />
+    <option name="totallyTimeSpent" value="31206000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="468" y="235" width="1352" height="735" extended-state="0" />
