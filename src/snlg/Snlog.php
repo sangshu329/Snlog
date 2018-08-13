@@ -6,6 +6,7 @@
  * Date: 2018-08-06
  * Time: 13:56
  */
+namespace snlg;
 Class Snlog
 {
     private $seaslog_tag = 'appLog';
