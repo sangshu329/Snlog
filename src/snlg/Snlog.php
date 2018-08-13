@@ -6,7 +6,12 @@
  * Date: 2018-08-06
  * Time: 13:56
  */
+
 namespace snlg;
+
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
 Class Snlog
 {
     private $seaslog_tag = 'appLog';
@@ -15,6 +20,13 @@ Class Snlog
     private $seaslogEable = 0;
     private $recodeMode = 0;  // 是否启用双模式记录日志
 
+    /**
+     * Snlog constructor.
+     * @param string $tag
+     * @param string $path
+     * @param int $mode 1为启用单模式记录，2为启用双模式日志记录
+     * @param int $islocal_log
+     */
     public function __construct($tag = '', $path = '', $mode = 0, $islocal_log = 0)
     {
         is_string($tag) && !empty($tag) ? $this->seaslog_tag = $tag : '';
@@ -27,7 +39,6 @@ Class Snlog
 
     /**
      * @日志记录主方法
-     *
      * @param string $key
      * @param string $value
      * @param int $isurl
@@ -58,6 +69,73 @@ Class Snlog
     }
 
 
+    /**
+     * @param $name
+     * @param string $path
+     * @param string $handler
+     * @return Logger
+     */
+    public function molog($name, $path = '', $handler = '')
+    {
+        $log = new Logger($name);
+        $path = $path === '' ? 'applog' : str_replace('\\', '/', $path);
+        if (strpos($path, '/') === false) {
+            $curPath = $this->getCurPath() . 'logs/' . $path;
+        } else {
+            $curPath = $path;
+        }
+
+        $handler = $handler === '' ? new StreamHandler($curPath, Logger::WARNING) : $handler;
+        $log->pushHandler($handler);
+        return $log;
+    }
+
+    /**
+     * mongolog的handler设置
+     * @param string $path
+     * @param string $modevalue
+     * @return StreamHandler
+     */
+    public function mohandler($path = '', $modevalue = 'WARNING')
+    {
+        switch ($modevalue) {
+            case 'DEBUG':
+                $mode = Logger::DEBUG;
+                break;
+            case 'INFO':
+                $mode = Logger::INFO;
+                break;
+            case 'NOTICE':
+                $mode = Logger::NOTICE;
+                break;
+            case 'WARNING':
+                $mode = Logger::WARNING;
+                break;
+            case 'ERROR':
+                $mode = Logger::ERROR;
+                break;
+            case 'CRITICAL':
+                $mode = Logger::CRITICAL;
+                break;
+            case 'ALERT':
+                $mode = Logger::ALERT;
+                break;
+            case 'EMERGENCY':
+                $mode = Logger::EMERGENCY;
+                break;
+            default:
+                $mode = Logger::DEBUG;
+                break;
+        }
+        $path = $path === '' ? 'applog_' . $modevalue : str_replace('\\', '/', $path);
+        if (strpos($path, '/') === false) {
+            $curPath = $this->getCurPath() . 'logs/' . $path;
+        } else {
+            $curPath = $path;
+        }
+        return new StreamHandler($curPath, $mode);
+    }
+
     private function checkSeaslog()
     {
         if (class_exists('SeasLog')) {
@@ -66,7 +144,7 @@ Class Snlog
         return false;
     }
 
-    public function localLog($key, $value, $isurl = '', $fun = 0)
+    private function localLog($key, $value, $isurl = '', $fun = 0)
     {
         $filePath = $this->debugInfo['file'];
         $path = str_replace('\\', '/', str_replace(basename($filePath), '', $filePath));
@@ -86,7 +164,8 @@ Class Snlog
             $user_fun = 'json_encode';
         }
         if (is_array($value) || is_object($value)) {
-            $value = call_user_func($user_fun, $value);
+//            $value = call_user_func($user_fun, $value);
+            $value = json_encode($value, JSON_UNESCAPED_UNICODE);
         }
         if (!is_dir($path . 'logs')) @mkdir($path . 'logs', 0777, true);
 
@@ -107,7 +186,7 @@ Class Snlog
         file_put_contents($path . 'logs/' . $this->seaslog_tag . date('Ymd') . '.log', $log_data, FILE_APPEND | LOCK_EX);
     }
 
-    public function seaslogLog($key = '', $data = '', $isurl = '')
+    private function seaslogLog($key = '', $data = '', $isurl = '')
     {
         SeasLog::setLogger($this->seaslog_tag);
         if ($isurl) {
@@ -125,6 +204,17 @@ Class Snlog
                 ))
             );
         }
+    }
+
+    /**
+     * 获取当前运行文件的目录路径
+     * @return mixed
+     */
+    private function getCurPath()
+    {
+        $filePath = $this->debugInfo['file'];
+        $curPath = str_replace('\\', '/', str_replace(basename($filePath), '', $filePath));
+        return $curPath;
     }
 
     public static function isWritable($filename)
@@ -175,4 +265,6 @@ Class Snlog
                 return 'cli';
         }
     }
+
+
 }

@@ -5,7 +5,8 @@
     "license": "MIT",
     "minimum-stability": "dev",
     "require": {
-        "php":">=5.3.0"
+        "php":">=5.3.0",
+        "monolog/monolog":"1.23.*"
     },
     "autoload":{
         "psr-4":{
