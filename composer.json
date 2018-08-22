@@ -10,7 +10,8 @@
     },
     "autoload":{
         "psr-4":{
-            "snlg\\":"src/snlg"
+            "snlg\\":"src/snlg",
+            "utils\\":"src/utils"
         }
     }
 }
